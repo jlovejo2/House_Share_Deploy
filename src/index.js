@@ -18,11 +18,10 @@ require("dotenv").config();
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const compression_1 = __importDefault(require("compression"));
 const apollo_server_express_1 = require("apollo-server-express");
 const database_1 = require("./database");
 const graphql_1 = require("./graphql");
-// import bodyParser from "body-parser";
-// import { listings } from "./listings";
 //makes database connection more apparent
 //the app has type that is the Application imported from express
 //mount function excepts the express app instance
@@ -30,6 +29,11 @@ const mount = (app) => __awaiter(void 0, void 0, void 0, function* () {
     const db = yield database_1.connectDatabase();
     app.use(body_parser_1.default.json({ limit: "2mb" }));
     app.use(cookie_parser_1.default(process.env.SECRET));
+    app.use(compression_1.default());
+    //express method for serving static files
+    app.use(express_1.default.static(`${__dirname}/client`));
+    //tells every route user enters to serve same index.html file
+    app.get("/*", (_req, res) => res.sendFile(`${__dirname}/client/index.html`));
     //creating instance of ApolloServer
     //passing in options needed to instantiate the apolloServer instance
     //ApolloSever expects an existing schema or object with typeDefs and resolvers to be passed into it
