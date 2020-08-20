@@ -58,10 +58,10 @@ const mount = (app) =>
     app.use(cookie_parser_1.default(process.env.SECRET));
     app.use(compression_1.default());
     //express method for serving static files
-    app.use(express_1.default.static(`${__dirname}/src/client`));
+    app.use(express_1.default.static(`${__dirname}/client`));
     //tells every route user enters to serve same index.html file
     app.get("/*", (_req, res) =>
-      res.sendFile(`${__dirname}/src/client/index.html`)
+      res.sendFile(`${__dirname}/client/index.html`)
     );
     //creating instance of ApolloServer
     //passing in options needed to instantiate the apolloServer instance
